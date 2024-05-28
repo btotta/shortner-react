@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  react-app:
+    build: .
+    ports:
+      - ${MS_PORT}:5000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
