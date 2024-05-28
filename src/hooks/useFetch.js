@@ -1,26 +1,24 @@
-import { useEffect, useState } from "react";
+// src/hooks/useFetch.js
+import { useCallback, useState } from "react";
 
-const useFetch = (apiFunc) => {
+const useFetch = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await apiFunc();
-        setData(result);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = useCallback(async (apiFunc) => {
+    setLoading(true);
+    try {
+      const result = await apiFunc();
+      setData(result);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-    fetchData();
-  }, [apiFunc]);
-
-  return { data, error, loading };
+  return { data, error, loading, fetchData };
 };
 
 export default useFetch;
